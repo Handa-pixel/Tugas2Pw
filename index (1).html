@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Perpustakaan Aksara</title>
+  <meta name="description" content="Cari buku, lihat kategori, dan cek jam layanan Perpustakaan Aksara.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%9A%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+  <!-- Menandai bahwa JavaScript aktif, supaya animasi hanya jalan kalau JS ada -->
+  <script>document.documentElement.className += ' js';</script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="lewati" href="#konten">Lewati ke konten utama</a>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="header">
+    <div class="wadah header-isi">
+      <a class="logo" href="#beranda">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M16 8c-2.5-2-6-3-11-3v18c5 0 8.5 1 11 3 2.5-2 6-3 11-3V5c-5 0-8.5 1-11 3z"/>
+          <path d="M16 8v18"/>
+        </svg>
+        <span>Perpustakaan Aksara</span>
+      </a>
+
+      <button class="menu-tombol" type="button" aria-expanded="false" aria-controls="menu-utama" aria-label="Buka menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="menu" id="menu-utama" aria-label="Navigasi utama">
+        <ul>
+          <li><a href="#beranda">Beranda</a></li>
+          <li><a href="#koleksi">Koleksi</a></li>
+          <li><a href="#kategori">Kategori</a></li>
+          <li><a href="#layanan">Jam layanan</a></li>
+          <li><a href="#tentang">Tentang kami</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="konten">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero latar-arang" id="beranda" aria-labelledby="judul-hero">
+      <div class="wadah hero-grid">
+
+        <div class="hero-teks">
+          <h1 id="judul-hero">Temukan buku berikutnya di rak kami.</h1>
+          <p>Cari judul, penulis, atau kategori dari koleksi Perpustakaan Aksara, lalu datang dan pinjam di meja layanan.</p>
+          <div class="aksi">
+            <a class="tombol tombol-krem" href="#koleksi">Lihat koleksi</a>
+            <a class="tombol tombol-garis" href="#layanan">Cek jam layanan</a>
+          </div>
+          <p class="status-buka" id="status-buka" aria-live="polite"></p>
+        </div>
+
+        <div class="kartu-tumpuk">
+          <!-- Kolom pencarian dibuat seperti kartu katalog perpustakaan -->
+          <form class="kartu" id="form-cari" role="search" novalidate>
+            <h2 class="kartu-judul">Cari di katalog</h2>
+
+            <label class="sr" for="kata-kunci">Judul, penulis, atau kategori</label>
+            <div class="cari-baris">
+              <input id="kata-kunci" name="q" type="search" placeholder="Contoh: Laskar Pelangi" autocomplete="off">
+              <button class="tombol tombol-merah" type="submit">Cari buku</button>
+            </div>
+
+            <p class="cepat-judul">Atau telusuri per rak:</p>
+            <ul class="cepat">
+              <li><button type="button" data-kategori="Fiksi"><span>Fiksi</span><span>Rak A</span></button></li>
+              <li><button type="button" data-kategori="Komik"><span>Komik</span><span>Rak B</span></button></li>
+              <li><button type="button" data-kategori="Sejarah"><span>Sejarah</span><span>Rak C</span></button></li>
+            </ul>
+
+            <span class="lubang" aria-hidden="true"></span>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================== KOLEKSI ===================== -->
+    <section class="bagian latar-merah" id="koleksi" aria-labelledby="judul-koleksi">
+      <div class="wadah">
+        <div class="kepala-bagian reveal">
+          <h2 id="judul-koleksi">Buku terbaru dan populer</h2>
+          <p>Buku yang baru datang dan yang paling sering dipinjam. Ketik di kolom pencarian atau pilih kategori untuk menyaringnya.</p>
+        </div>
+
+        <div class="hasil-info">
+          <p id="info-hasil" aria-live="polite"></p>
+          <button class="tautan" id="reset" type="button" hidden>Tampilkan semua buku</button>
+        </div>
+
+        <div class="rak" id="rak"></div>
+        <p class="kosong" id="kosong" hidden></p>
+      </div>
+    </section>
+
+    <!-- ===================== KATEGORI + JAM LAYANAN ===================== -->
+    <section class="bagian latar-arang" aria-label="Kategori buku dan jam layanan">
+      <div class="wadah dua-kolom">
+
+        <div id="kategori">
+          <div class="kepala-bagian reveal">
+            <h2>Telusuri per kategori</h2>
+            <p>Setiap kategori punya rak sendiri. Pilih salah satu untuk melihat bukunya.</p>
+          </div>
+          <ul class="daftar-isi reveal">
+            <li><a href="#koleksi" data-kategori="Fiksi"><span class="nama">Fiksi</span><span class="titik" aria-hidden="true"></span><span class="rak-kode">Rak A</span></a></li>
+            <li><a href="#koleksi" data-kategori="Komik"><span class="nama">Komik</span><span class="titik" aria-hidden="true"></span><span class="rak-kode">Rak B</span></a></li>
+            <li><a href="#koleksi" data-kategori="Sejarah"><span class="nama">Sejarah</span><span class="titik" aria-hidden="true"></span><span class="rak-kode">Rak C</span></a></li>
+            <li><a href="#koleksi" data-kategori="Dongeng"><span class="nama">Dongeng</span><span class="titik" aria-hidden="true"></span><span class="rak-kode">Rak D</span></a></li>            <li><a href="#koleksi" data-kategori="Teknologi"><span class="nama">Teknologi</span><span class="titik" aria-hidden="true"></span><span class="rak-kode">Rak E</span></a></li>
+          </ul>
+        </div>
+
+        <div id="layanan">
+          <div class="kepala-bagian reveal">
+            <h2>Jam layanan</h2>
+            <p>Datang saat perpustakaan buka untuk meminjam, mengembalikan, atau membaca di tempat.</p>
+          </div>
+          <!-- Kalau jam berubah, ubah juga bagian JADWAL di script.js -->
+          <table class="jadwal reveal">
+            <caption class="sr">Jam layanan perpustakaan</caption>
+            <tbody>
+              <tr data-hari="1 2 3 4"><th scope="row">Senin sampai Kamis</th><td>08.00 sampai 16.00</td></tr>
+              <tr data-hari="5"><th scope="row">Jumat</th><td>08.00 sampai 11.30, 13.00 sampai 16.00</td></tr>
+              <tr data-hari="6"><th scope="row">Sabtu</th><td>09.00 sampai 13.00</td></tr>
+              <tr data-hari="0"><th scope="row">Minggu dan hari libur</th><td>Tutup</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================== TENTANG KAMI ===================== -->
+    <section class="bagian latar-merah" id="tentang" aria-labelledby="judul-tentang">
+      <div class="wadah">
+        <div class="tentang-teks reveal">
+          <h2 id="judul-tentang">Tentang kami</h2>
+          <p>Perpustakaan Aksara adalah ruang baca terbuka untuk pelajar, mahasiswa, dan warga sekitar. Kami menyediakan buku yang terawat, meja baca yang tenang, dan pustakawan yang siap membantu mencari bacaan.</p>
+          <p>Website ini dibuat oleh Kelompok 8 agar koleksi dan jam layanan perpustakaan mudah dicek dari mana saja.</p>
+        </div>
+
+        <div class="tim reveal">
+          <h3>Kelompok 8</h3>
+          <p>Lima orang di balik website ini.</p>
+
+          <!-- Ganti nama dan peran. Inisial di lingkaran dibuat otomatis dari nama. -->
+          <ul class="anggota">
+  <li>
+    <img class="foto-anggota" src="Anggota1.jpeg" alt="Muhammad Abianda">
+    <span class="anggota-nama">Muhammad Abianda</span>
+    <span class="anggota-peran">Ketua kelompok</span>
+  </li>
+  <li>
+    <img class="foto-anggota" src="Anggota2.png" alt="Khansa Hanifah">
+    <span class="anggota-nama">Khansa Hanifah</span>
+  </li>
+  <li>
+    <img class="foto-anggota" src="Anggota 3.png" alt="TsiqoTunnisa Ramadhan">
+    <span class="anggota-nama">TsiqoTunnisa Ramadhan</span>
+  </li>
+  <li>
+    <img class="foto-anggota" src="Anggota4.png" alt="Khairunisa">
+    <span class="anggota-nama">Khairunisa</span>
+  </li>
+  <li>
+    <img class="foto-anggota" src="Anggota5.png" alt="Mayang Charisya Rossa Yoli">
+    <span class="anggota-nama">Mayang Charisya Rossa Yoli</span>
+  </li>
+</ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer latar-arang">
+    <div class="wadah footer-isi">
+      <div>
+        <p class="footer-nama">Perpustakaan Aksara</p>
+        <p>Jl. Sriwijaya No. 8</p>
+        <p>perpustakaan@Aksara.id</p>
+      </div>
+      <p class="footer-hak">&copy; <span id="tahun">2026</span> Perpustakaan Aksara. Dibuat oleh Kelompok 8.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
